@@ -57,7 +57,7 @@ const ProductDetail = () => {
     <>
       <MetaData title="Product Details" />
       <Header />
-      <div className="w-full flex justify-around flex-col items-center lg:flex-row my-14">
+      <div className="w-full flex justify-around flex-col items-center lg:flex-row my-14 overflow-x-hidden">
                 <div className="h-[350px] w-[350px]">
                     <Slider {...slider}>
 
@@ -78,7 +78,7 @@ const ProductDetail = () => {
                     </Slider>
                 </div>
 
-                <div className="w-[750px] flex flex-col gap-2">
+                <div className="md:w-[50vw] w-[94vw] flex flex-col gap-2 items-center">
                     <h2 className="text-xl font-bold">{product?.name}</h2>
 
                     <div>
@@ -100,7 +100,7 @@ const ProductDetail = () => {
                     <p className={`text-lg font-bold ${product?.stock < 1 ? "text-red-600" : "text-green-600"}`}>{product?.stock < 1 ? "OutOfStock" : "InStock"}</p>
 
                     <div className="text-gray-700 font-medium font-mono">
-                        {product?.description}
+                        <p className="md:px-0 px-12">{product?.description}</p>
                     </div>
 
                     <div className="flex items-center gap-6">
@@ -129,7 +129,7 @@ const ProductDetail = () => {
                     <div>
                         <h2 className='text-lg font-bold'>Add a Review</h2>
                         <p>Your Rating*</p>
-                        <textarea name="" id="" cols="30" rows="10" placeholder='Comments*' className="border border-gray-600 w-full my-4"></textarea>
+                        <textarea name="" id="" cols="30" rows="10" placeholder='Comments*' className="border border-gray-600 w-full my-4 px-4 py-2"></textarea>
                         <button className="bg-orange-600 px-10 py-2 text-center text-white rounded-lg text-lg">Submit</button>
                     </div>
                 </div>

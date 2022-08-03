@@ -5,17 +5,17 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
-        <div className="flex flex-col gap-8">
-            <div className="flex items-center justify-between p-6">
-                <div className='z-10'>
-                    <Link to="/"><img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/logo.svg" alt="logo" /></Link>
+        <div className="flex flex-col relative overflow-x-hidden">
+            <div className="flex md:flex-row  flex-col items-center justify-between p-6">
+                <div className='z-10 md:my-0 my-4'>
+                    <Link to="/"><img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/logo.svg" alt="logo"/></Link>
                 </div>
 
-                <div className='bg-red-500 text-white py-4 px-6 w-3/5'>
-                    <p className='animate-sliding block'>Welcome to our shop...You can find anything in here as your favourites..</p>
+                <div className='bg-red-500 text-white py-5 md:w-[50%] w-[400px] rounded-sm relative'>
+                    <p className='animate-sliding h-[100px] block w-full absolute top-[20%] overflow-hidden '><span>Here, You can find anything in here as your favourites..</span></p>
                 </div>
 
-                <div className="z-10 flex items-center">
+                <div className="z-10 flex items-center md:mt-0 mt-4">
                     <div className='px-2 text-green-400'>
                         <MailOutlineIcon />
                     </div>
@@ -26,7 +26,7 @@ const Header = () => {
             </div>
 
             <div className='flex items-center justify-between px-4'>
-                <ul className='flex items-center gap-4 text-black font-bold text-lg cursor-pointer'>
+                <ul className='hidden md:flex md:items-center md:gap-4 text-black font-bold text-lg cursor-pointer'>
                     <Link to="/">
                         <li>Home</li>
                     </Link>
@@ -47,7 +47,7 @@ const Header = () => {
                     </Link>
                 </ul>
 
-                <div className="flex items-center gap-4">
+                <div className="hidden md:flex md:items-center md:gap-4">
                     <div>
                         <Link to="/search">
                             <svg
@@ -93,7 +93,7 @@ const Header = () => {
                             <span>5</span>
                         </div>
                     </div>
-                    <div className="">
+                    <div className="md:w-full w-[100vw]">
                         <div className="relative">
                             <Link to="/cart">
                                 <svg

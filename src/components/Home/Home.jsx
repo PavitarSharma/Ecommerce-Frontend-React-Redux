@@ -70,13 +70,13 @@ const Home = () => {
             <MetaData title="Home"/>
             <Header />
     
-            <div className="mt-4" >
+            <div className="mt-4 overflow-x-hidden" >
                 <Slider {...slider}>
                     <div className="w-full h-[600px] relative">
                         <img className="w-full h-full object-cover" src={bg} alt="bgimage" />
-                        <div className="absolute top-[40%] left-[20%] z-10 flex flex-col items-center">
-                            <h1 className="text-4xl">Buy 2 Get <span className="bg-white py-2 px-4 rounded-sm text-blue-500"> 1 Free</span></h1>
-                            <h1 className="text-7xl text-white font-bold my-2">Fashionable</h1>
+                        <div className="absolute top-[40%] md:left-[20%] left-[10%] z-10 flex flex-col items-center">
+                            <h1 className="md:text-4xl text-xl">Buy 2 Get <span className="bg-white py-2 px-4 rounded-sm text-blue-500"> 1 Free</span></h1>
+                            <h1 className="md:text-7xl text-5xl text-white font-bold my-2">Fashionable</h1>
                             <h3 className="text-5xl text-white font-medium">Collection</h3>
                             <p className="text-white font-medium font-mono my-2">Get Free Shipping on all orders over $99.00</p>
                             <Link to="/" className="bg-green-400 py-3 px-6 rounded-md cursor-pointer text-white">Shop Now</Link>
@@ -84,9 +84,9 @@ const Home = () => {
                     </div>
                     <div className="w-full h-[600px] relative">
                         <img className="w-full h-full object-cover" src={bg2} alt="bgimage2" />
-                        <div className="absolute top-[40%] left-[20%] z-10 flex flex-col items-center">
-                            <h1 className="text-4xl">Buy 2 Get <span className="bg-white py-2 px-4 rounded-sm text-blue-500"> 1 Free</span></h1>
-                            <h1 className="text-7xl text-white font-bold my-2">Fashionable</h1>
+                        <div className="absolute top-[40%] md:left-[20%] left-[10%] z-10 flex flex-col items-center">
+                            <h1 className="md:text-4xl text-xl">Buy 2 Get <span className="bg-white py-2 px-4 rounded-sm text-blue-500"> 1 Free</span></h1>
+                            <h1 className="md:text-7xl text-5x text-white font-bold my-2">Fashionable</h1>
                             <h3 className="text-5xl text-white font-medium">Collection</h3>
                             <p className="text-white font-medium font-mono my-2">Get Free Shipping on all orders over $99.00</p>
                             <Link to="/" className="bg-green-400 py-3 px-6 rounded-md cursor-pointer text-white">Shop Now</Link>
