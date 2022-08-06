@@ -18,6 +18,10 @@ module.exports = {
       animation: {
         'sliding': 'sliding 14s linear infinite',
       },
+
+      backgroundImag: {
+        "login-signup" :"https://image.freepik.com/free-vector/online-wishes-list-concept-illustration_114360-3900.jpg"
+      }
     },
     plugins: [],
   }

@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MetaData from '../../more/Metadata';
 import Error from "../../more/Error"
+import Footer from '../Footer/Footer';
 
 const Home = () => {
     const dispatch = useDispatch()
@@ -67,7 +68,7 @@ const Home = () => {
     }
     return (
         <div>
-            <MetaData title="Home"/>
+            <MetaData title="Ecommerce: Online Marketing For Your Home"/>
             <Header />
     
             <div className="mt-4 overflow-x-hidden" >
@@ -119,6 +120,8 @@ const Home = () => {
                 draggable
                 pauseOnHover
             />
+
+            <Footer />
 
         </div>
     )

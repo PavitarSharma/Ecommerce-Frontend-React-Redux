@@ -8,6 +8,14 @@ const axiosClient = axios.create({
     paramsSerializer: (params) => params,
 })
 
+axiosClient.interceptors.request.use(async (config) => {
+	const token = localStorage.getItem('token')
+	const auth = token ? `Bearer ${token}` : ''
+	config.headers.common['Authorization'] = auth
+
+	return config
+})
+
 axiosClient.interceptors.response.use(
     (response) => {
         if (response && response.data) {
