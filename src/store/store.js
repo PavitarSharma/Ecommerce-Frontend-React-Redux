@@ -34,9 +34,14 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
+            
         }),
 })
 
 export let persistor = persistStore(store)
 
 // https://github.com/nizzie-2204/Reno-shoe-shop/tree/master/client
+
+//  https://github.com/bradtraversy/mern-tutorial/tree/main/frontend
+
+// https://github.com/shahriarsajeeb/MERN-Ecommerce-store/tree/master/frontend

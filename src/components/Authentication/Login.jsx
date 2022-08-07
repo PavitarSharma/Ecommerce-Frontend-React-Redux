@@ -1,11 +1,60 @@
-import React from 'react'
-import { Link } from "react-router-dom"
+import React, { useState, useEffect } from 'react'
 import MetaData from "../../more/Metadata"
+import Spinner from "../../more/Spinner"
+import { Link, useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from 'react-redux'
+import { login, reset } from "../../store/slices/authSlice"
 
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { user, loading, error, success, message } = useSelector((state) => state.auth)
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const { email, password } = formData
+
+  useEffect(() => {
+    if (error) {
+      toast.error(message)
+    }
+
+    if (success) {
+      toast.success("Login Successful")
+      navigate('/')
+    }
+
+    dispatch(reset())
+  }, [user, error, success, message, navigate, dispatch])
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    const userData = {
+      email,
+      password,
+    }
+
+    dispatch(login(userData))
+  }
+
+  if (loading) {
+    return <Spinner />
+  }
   return (
     <>
       <MetaData title="Sign up" />
@@ -24,25 +73,29 @@ const Login = () => {
         />
       </div>
       <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-        <form>
+        <form onSubmit={onSubmit}>
           <div className="mb-6">
             <input
-              type="email"
+              type='email'
+              id='email'
+              name='email'
+              value={email}
+              placeholder='Email'
+              onChange={onChange}
               className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              id="email"
-              required
-              placeholder="Email"
             />
           </div>
 
          
           <div className="mb-6">
           <input
-              type="password"
+              type='password'
+              id='password'
+              name='password'
+              value={password}
+              placeholder='Enter password'
+              onChange={onChange}
               className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              id="password"
-              required
-              placeholder="Password"
             />
           </div>
 

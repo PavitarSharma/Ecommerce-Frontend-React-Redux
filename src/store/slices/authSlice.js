@@ -5,9 +5,13 @@ export const signUp = createAsyncThunk(
     'auth/signUp',
     async (data, { rejectWithValue }) => {
         try {
-            const result = await authAPI.register(data)
+            const response = await authAPI.register(data)
 
-            return result
+            if (response.data) {
+                localStorage.setItem('user', JSON.stringify(response.data))
+            }
+
+            return response.data
         } catch (error) {
             return rejectWithValue(error.response)
         }
@@ -18,7 +22,13 @@ export const login = createAsyncThunk(
     'auth/login',
     async (data, { rejectWithValue }) => {
         try {
-            return await authAPI.login(data)
+            const response = await authAPI.login(data)
+
+            if (response.data) {
+                localStorage.setItem('user', JSON.stringify(response.data))
+            }
+
+            return response.data
         } catch (error) {
             return rejectWithValue(error.response)
         }
@@ -29,11 +39,20 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         user: {},
-        status: 'idle',
-        error: null,
-        userToken: null
+        loading: false,
+        success: false,
+        error: false,
+        userToken: null,
+        message: "",
     },
-    reducers: {},
+    reducers: {
+        reset: (state) => {
+            state.loading = false
+            state.success = false
+            state.error = false
+            state.message = ""
+        }
+    },
 
     extraReducers: {
 
@@ -43,10 +62,30 @@ const authSlice = createSlice({
         },
         [signUp.fulfilled]: (state, action) => {
             state.loading = false
-            state.success = action.payload.user // registration successful
+            state.user = action.payload.user
+            state.success = true // registration successful
         },
         [signUp.rejected]: (state, { payload }) => {
             state.loading = false
+            state.message = true
+            state.user = null
+            state.error = payload
+        },
+
+        [login.pending]: (state) => {
+            state.loading = true
+            state.error = null
+        },
+        [login.fulfilled]: (state, action) => {
+            state.loading = false
+            state.user = action.payload.user
+            state.userToken = action.payload.userToken
+            state.success = true // registration successful
+        },
+        [login.rejected]: (state, { payload }) => {
+            state.loading = false
+            state.message = true
+            state.user = null
             state.error = payload
         },
 
@@ -54,4 +93,5 @@ const authSlice = createSlice({
     }
 })
 
+export const { reset } = authSlice.actions
 export default authSlice.reducer

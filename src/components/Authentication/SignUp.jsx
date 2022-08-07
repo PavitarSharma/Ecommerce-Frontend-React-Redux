@@ -3,43 +3,93 @@ import { Link, useNavigate } from "react-router-dom"
 import MetaData from "../../more/Metadata"
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
+import Spinner from "../../more/Spinner"
 import { useDispatch, useSelector } from 'react-redux'
-import { signUp } from "../../store/slices/authSlice"
+import { signUp, reset } from "../../store/slices/authSlice"
 
 
 const SignUp = () => {
-  const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { status, error } = useSelector((state) => state.auth)
+  const { loading, error, success, message } = useSelector((state) => state.auth)
   // console.log(auth);
   // const [error, setError] = useState()
 
+  const [avatar, setAvatar] = useState("https://cdn.pixabay.com/photo/2016/04/22/04/57/graduation-1345143__340.png");
+  const [avatarPreview, setAvatarPreview] = useState("https://cdn.pixabay.com/photo/2016/04/22/04/57/graduation-1345143__340.png");
 
-  const submitForm = (data) => {
-    data.email = data.email.toLowerCase()
-    const action = signUp(data)
-    dispatch(action)
-  }
+
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    mobile: "",
+    password: "",
+  })
+
+
+
+  const { username, email, mobile, password } = user;
+
+  const registerSubmit = (e) => {
+    e.preventDefault();
+
+    //const myForm = new FormData();
+    const userData = {
+      username,
+      email,
+      mobile,
+      password,
+    }
+
+    /*myForm.append("username", username);
+    myForm.append("email", email);
+    myForm.append("mobile", mobile);
+    myForm.append("password", password);
+    myForm.append("avatar", avatar);*/
+    dispatch(signUp(userData))
+  };
+
+  const registerDataChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatarPreview(reader.result);
+          setAvatar(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }))
+      //setUser({ ...user, [e.target.name]: e.target.value });
+    }
+  };
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
-
+      toast.error(message)
     }
 
-    if (status === "failed") {
-      toast.error("Registration failed!");
-
+    if (success) {
+      toast.success("Registeration Successful")
+      navigate('/')
     }
 
-    if (status === 'success') {
-      toast.success("Registration Successfull");
-      navigate('/login')
-    }
-  }, [status, error])
+    dispatch(reset())
+  }, [user, error, success, message, navigate, dispatch])
+
+
+  
+  if (loading) {
+    return <Spinner />
+  }
 
 
 
@@ -58,16 +108,21 @@ const SignUp = () => {
               />
             </div>
             <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-              <form onSubmit={handleSubmit(submitForm)}>
+              <form
+                encType="multipart/form-data"
+                onSubmit={registerSubmit}>
                 <div className="mb-6">
                   <input
-                    id='userName'
+                    id='username'
                     type="text"
-                    autoComplete='off'
-                    required
-                    {...register('userName', { required: true, maxLength: 30 })}
-                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Username"
+                    required
+                    autoComplete="off"
+                    name="username"
+                    value={username}
+                    onChange={registerDataChange}
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+
                   />
 
                 </div>
@@ -75,35 +130,60 @@ const SignUp = () => {
 
                 <div className="mb-6">
                   <input
+                    id='email'
                     type="email"
+                    placeholder="Email"
+                    required
+                    name="email"
+                    value={email}
+                    autoComplete="off"
+                    onChange={registerDataChange}
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+
+                  />
+                </div>
+
+                <div className="mb-6">
+                  <input
+                    id='mobile'
+                    type="tele"
+                    name="mobile"
+                    value={mobile}
                     autoComplete='off'
                     required
-                    {...register('email')}
+                    placeholder="Mobile number"
+                    onChange={registerDataChange}
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    placeholder="Email"
                   />
                 </div>
 
 
                 <div className="mb-6">
                   <input
-                    id="password"
+                    id='password'
                     type="password"
-                    {...register('password')}
-                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Password"
+                    required
+                    name="password"
+                    value={password}
+                    autoComplete="off"
+                    onChange={registerDataChange}
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+
                   />
                 </div>
 
                 <div className="flex md:flex-row flex-col md:gap-0 gap-4 items-center justify-between mb-6">
                   <div className="shrink-0">
                     <img className="object-cover w-16 h-16 rounded-full"
-                      src="https://cdn.pixabay.com/photo/2016/04/22/04/57/graduation-1345143__340.png" alt="profilephoto" />
+                      src={avatarPreview} alt="profilephoto" />
                   </div>
                   <input
                     type="file"
                     name="avatar"
+                    // {...register("avatar")}
                     accept="image/*"
+                    onChange={registerDataChange}
                     className="text-sm text-grey-500
                     file:mr-5 file:py-3 file:px-10
                     file:rounded-full file:border-0
@@ -115,7 +195,7 @@ const SignUp = () => {
 
 
 
-
+                {/* <input type="submit" value="Register" className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full" /> */}
                 <button
                   type="submit"
                   className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
