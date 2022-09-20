@@ -3,10 +3,13 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import AddIcCallOutlinedIcon from '@mui/icons-material/AddIcCallOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import { useSelector } from "react-redux";
+
 
 
 
 const Footer = () => {
+    const { user } = useSelector((state) => state.auth)
     return (
         <div className='flex lg:items-center justify-between lg:flex-row flex-col mt-20 mb-10'>
             <div className='flex flex-col items-start justify-start gap-4 px-10 lg:my-0 my-10'>
@@ -21,12 +24,12 @@ const Footer = () => {
 
                 <div className='flex items-center gap-2'>
                     <EmailOutlinedIcon className='text-green-500' />
-                    <h4 className="font-semibold">Email: <span className="font-normal">abc@gmail.com</span> </h4>
+                    <h4 className="font-semibold">Email: <span className="font-normal">{user.email}</span> </h4>
                 </div>
 
                 <div className='flex items-center gap-2'>
                     <AddIcCallOutlinedIcon className='text-green-500' />
-                    <h4 className="font-semibold">Call us: <span className="font-normal">+91 4578978954</span> </h4>
+                    <h4 className="font-semibold">Call us: <span className="font-normal">{user.mobile}</span> </h4>
                 </div>
 
                 <div className='flex items-center gap-2'>
@@ -65,7 +68,7 @@ const Footer = () => {
                     <h3 className="font-bold text-2xl">Rules</h3>
                     <h4 className="font-semibold text-lg cursor-pointer">FAQ</h4>
                     <h4 className="font-semibold text-lg cursor-pointer">Contact us</h4>
-                    <h4 className="font-semibold text-lg cursor-pointer">Abou us</h4>
+                    <h4 className="font-semibold text-lg cursor-pointer">About us</h4>
                     <h4 className="font-semibold text-lg cursor-pointer">Live chat</h4>
                 </div>
 

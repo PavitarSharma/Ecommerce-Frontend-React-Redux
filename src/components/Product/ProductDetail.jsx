@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from "../../more/Spinner"
 import MetaData from '../../more/Metadata';
 import Error from "../../more/Error"
 import { useParams } from 'react-router-dom';
 import { getProduct } from '../../store/slices/productSlice';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '../Home/Header';
 import Slider from "react-slick";
@@ -16,48 +16,66 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 
 const ProductDetail = () => {
-  const dispatch = useDispatch()
-  const { id } = useParams()
-  const { product, status, error } = useSelector((state) => state.product.product)
+    const dispatch = useDispatch()
+    const { id } = useParams()
+    const { product, status, error } = useSelector((state) => state.product.product)
 
-  console.log(product);
-  console.log(id);
+    const [quantity, setQuantity] = useState(1)
+    const handleIncreaseQuantity = () => {
+        if (!product.stock) return
 
-  useEffect(() => {
-    const fetchProduct = () => {
-      const action = getProduct(id?.toString())
-      dispatch(action)
+        if (product.stock <= quantity) {
+            return toast.error("Product stock limited");
+        }
+        else setQuantity(quantity + 1)
     }
 
-    fetchProduct()
-  }, [dispatch, id])
+    const handleDecreaseQuantity = () => {
+        if (!product.stock) return
 
-  if (status === 'loading') {
-    return <Spinner />
-  }
+        if (quantity <= 1) return
+        else {
+            setQuantity(quantity - 1)
+        }
+    }
 
-  if (status === 'failed') {
-    toast.error(error)
-    return <Error />
-    //https://img.freepik.com/free-vector/page-found-concept-illustration_114360-1869.jpg?size=338&ext=jpg&ga=GA1.2.115152945.1657866964
-  }
+    useEffect(() => {
+        const fetchProduct = () => {
+            const action = getProduct(id?.toString())
+            dispatch(action)
+        }
 
-  const slider = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 3000,
-    autoplaySpeed: 6000,
-    cssEase: "linear"
-  };
+        fetchProduct()
+    }, [dispatch, id])
 
-  return (
-    <>
-      <MetaData title="Product Details" />
-      <Header />
-      <div className="w-full flex justify-around flex-col items-center lg:flex-row my-14 overflow-x-hidden">
+    if (status === 'loading') {
+        return <Spinner />
+    }
+
+    if (status === 'failed') {
+        toast.error(error)
+        return <Error />
+        //https://img.freepik.com/free-vector/page-found-concept-illustration_114360-1869.jpg?size=338&ext=jpg&ga=GA1.2.115152945.1657866964
+    }
+
+
+
+    const slider = {
+        dots: true,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        speed: 3000,
+        autoplaySpeed: 6000,
+        cssEase: "linear"
+    };
+
+    return (
+        <>
+            <MetaData title="Product Details" />
+            <Header />
+            <div className="w-full flex justify-around flex-col items-center lg:flex-row my-14 overflow-x-hidden">
                 <div className="h-[350px] w-[350px]">
                     <Slider {...slider}>
 
@@ -88,12 +106,12 @@ const ProductDetail = () => {
                     <h2 className="text-lg font-semibold text-orange-700">₹{product?.price}</h2>
 
                     <div className="flex items-center gap-4">
-                        <sapn className="text-lg text-black font-semibold">Quantity: </sapn>
+                        <span className="text-lg text-black font-semibold">Quantity: </span>
 
                         <div>
-                            <RemoveIcon className="bg-gray-600 text-white mx-2 rounded-sm" />
-                            <input type="number" className="w-20 outline-0 border px-2 border-gray-600" />
-                            <AddIcon className="bg-gray-600 text-white mx-2 rounded-sm" />
+                            <RemoveIcon onClick={handleDecreaseQuantity} className="bg-gray-600 text-white mx-2 rounded-sm" />
+                            <span>{quantity}</span>
+                            <AddIcon onClick={handleIncreaseQuantity} className="bg-gray-600 text-white mx-2 rounded-sm" />
                         </div>
                     </div>
 
@@ -134,8 +152,19 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-    </>
-  )
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+        </>
+    )
 }
 
 export default ProductDetail

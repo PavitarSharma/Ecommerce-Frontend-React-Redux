@@ -11,13 +11,14 @@ import { login, reset } from "../../store/slices/authSlice"
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const token = JSON.parse(localStorage.getItem("token"))
   const { user, loading, error, success, message } = useSelector((state) => state.auth)
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
+
 
   const { email, password } = formData
 
@@ -26,12 +27,14 @@ const Login = () => {
       toast.error(message)
     }
 
-    if (success) {
-      toast.success("Login Successful")
+    if (success && token) {
+      
+      // toast.success("Login Successful")
       navigate('/')
     }
 
     dispatch(reset())
+    // eslint-disable-next-line
   }, [user, error, success, message, navigate, dispatch])
 
   const onChange = (e) => {
@@ -49,7 +52,17 @@ const Login = () => {
       password,
     }
 
-    dispatch(login(userData))
+    //console.log(userToken);
+
+    const action  = login(userData)
+    dispatch(action)
+    // .then((res) => {
+    //   toast.success("Login Successful")
+    //   navigate('/')
+    //   localStorage.setItem("token", JSON.stringify(res.payload.token))
+    // })
+    
+    
   }
 
   if (loading) {

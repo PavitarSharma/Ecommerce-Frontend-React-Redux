@@ -17,8 +17,9 @@ const SignUp = () => {
   // console.log(auth);
   // const [error, setError] = useState()
 
-  const [avatar, setAvatar] = useState("https://cdn.pixabay.com/photo/2016/04/22/04/57/graduation-1345143__340.png");
-  const [avatarPreview, setAvatarPreview] = useState("https://cdn.pixabay.com/photo/2016/04/22/04/57/graduation-1345143__340.png");
+  
+  const [avatar, setAvatar] = useState("/profile.png");
+  const [avatarPreview, setAvatarPreview] = useState("/profile.png")
 
 
   const [user, setUser] = useState({
@@ -41,6 +42,7 @@ const SignUp = () => {
       email,
       mobile,
       password,
+      avatar
     }
 
     /*myForm.append("username", username);
@@ -86,7 +88,7 @@ const SignUp = () => {
   }, [user, error, success, message, navigate, dispatch])
 
 
-  
+
   if (loading) {
     return <Spinner />
   }

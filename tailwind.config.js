@@ -10,17 +10,18 @@ module.exports = {
       },
       keyframes: {
         sliding: {
-          '0%': { transform: 'translateX(-70%)' },
-          '100%': { transform: 'translateX(130%)' },
+          '0%': { transform: 'translateX(-40%)' },
+          // '50%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
 
       animation: {
-        'sliding': 'sliding 14s linear infinite',
+        'sliding': 'sliding 10s linear infinite',
       },
 
       backgroundImag: {
-        "login-signup" :"https://image.freepik.com/free-vector/online-wishes-list-concept-illustration_114360-3900.jpg"
+        "login-signup": "https://image.freepik.com/free-vector/online-wishes-list-concept-illustration_114360-3900.jpg"
       }
     },
     plugins: [],

@@ -1,14 +1,21 @@
 import React from 'react'
+import { useSelector } from "react-redux";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const Header = () => {
+    const { user } = useSelector((state) => state.auth)
+    
+   
+    const token = JSON.parse(localStorage.getItem("token"))
+
+
     return (
         <div className="flex flex-col relative overflow-x-hidden">
             <div className="flex md:flex-row  flex-col items-center justify-between p-6">
                 <div className='z-10 md:my-0 my-4'>
-                    <Link to="/"><img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/logo.svg" alt="logo"/></Link>
+                    <Link to="/"><img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/logo.svg" alt="logo" /></Link>
                 </div>
 
                 <div className='bg-red-500 text-white py-5 md:w-[50%] w-[400px] rounded-sm relative'>
@@ -20,7 +27,7 @@ const Header = () => {
                         <MailOutlineIcon />
                     </div>
                     <div>
-                        <p><b>Email: </b>pavitar@gmail.com</p>
+                        <p><b>Email: </b>{user.email}</p>
                     </div>
                 </div>
             </div>
@@ -127,7 +134,7 @@ const Header = () => {
                         </div>
                     </div>
                     <div className="">
-                        <Link to="/login">
+                        <Link to={token ? "/" : "/login"}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="25"
